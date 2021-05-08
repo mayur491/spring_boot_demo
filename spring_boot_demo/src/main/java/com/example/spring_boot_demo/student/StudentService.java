@@ -23,6 +23,10 @@ public class StudentService {
 	public List<Student> getStudents() {
 		return studentRepository.findAll();
 	}
+	
+	public Optional<Student> getStudent(Long id) {
+		return studentRepository.findById(id);
+	}
 
 	public void registerNewStudent(Student student) {
 		Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());

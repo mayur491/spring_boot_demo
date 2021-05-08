@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table
@@ -20,16 +22,26 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
 
 	private Long id;
+	
+	@Size(min = 2)
 	private String name;
+	
+	
 	private String email;
+	
+	@Past
 	private LocalDate dateOfBirth;
+
 	@Transient
 	private Integer age;
 
 	public Student() {
 	};
 
-	public Student(Long id, String name, String email, LocalDate dateOfBirth) {
+	public Student(Long id,
+			String name,
+			String email,
+			LocalDate dateOfBirth) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -37,7 +49,9 @@ public class Student {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Student(String name, String email, LocalDate dateOfBirth) {
+	public Student(String name,
+			String email,
+			LocalDate dateOfBirth) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -77,7 +91,9 @@ public class Student {
 	}
 
 	public Integer getAge() {
-		return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+		return Period.between(this.dateOfBirth,
+				LocalDate.now())
+				.getYears();
 	}
 
 	public void setAge(Integer age) {

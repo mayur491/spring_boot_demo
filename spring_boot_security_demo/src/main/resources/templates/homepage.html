@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Login Page">
+<meta name="author" content="mayur.somani">
+<title>Home</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/loader.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+	<div style="text-align: center;">
+		<h1>Welcome to Spring Boot Security</h1>
+	</div>
+	<hr />
+
+	<!-- Loader.gif -->
+	<div id="loading" class="loader-container">
+		<div class="loading">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="table-responsive">
+
+			<table class="table table-bordered table-striped" id="link_table">
+				<caption>Links</caption>
+				<tr>
+					<th id="th">Name</th>
+					<th id="th">Action</th>
+				</tr>
+
+				<tr>
+					<td>Get all students</td>
+					<td>
+						<form class="form-logout" method="get" action="/students">
+							<button class="btn btn-primary" type="submit">Get all
+								students</button>
+						</form>
+					</td>
+				</tr>
+
+				<tr>
+					<td>Get a student</td>
+					<td>
+						<form class="form-logout" method="get" action="/students">
+							<input type="number" min="1" name="studentId"
+								placeholder="Student Id" required /> <br /> <br />
+							<button class="btn btn-primary" type="submit">Get
+								student</button>
+						</form>
+					</td>
+				</tr>
+
+				<tr>
+					<td>Register new student</td>
+					<td>
+						<form class="form-logout" method="get"
+							action="/registerNewStudent">
+							<button class="btn btn-primary" type="submit">Register
+								student</button>
+						</form>
+					</td>
+				</tr>
+
+				<tr>
+					<td>Update a student</td>
+					<td>
+						<form class="form-logout" method="get" action="#">
+							<input type="number" min="1" name="studentId"
+								placeholder="Student Id" required /> <br /> <br />
+							<button class="btn btn-primary" type="submit">Update
+								student</button>
+						</form>
+					</td>
+				</tr>
+
+				<tr>
+					<td>Delete a student</td>
+					<td>
+						<form class="form-logout" method="get" action="#">
+							<input type="number" min="1" name="studentId"
+								placeholder="Student Id" required /> <br /> <br />
+							<button class="btn btn-primary" type="submit">Delete
+								student</button>
+						</form>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+	<hr />
+	<div class="container" style="text-align: right">
+		<form class="form-logout" method="get" action="/logout">
+			<button class="btn btn-primary" type="submit">Logout</button>
+		</form>
+	</div>
+</body>
+<script>
+	/* function getAStudentFunction() {
+		var action = "/api/v1/student/"
+				+ document.getElementsByName("studentId")[0].value;
+		var getAStudentForm = document.getElementById('getAStudentForm');
+		getAStudentForm.action = action;
+	} */
+
+	// hide loader
+	$(window).ready(hideLoader);
+</script>
+</html>

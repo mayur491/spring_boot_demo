@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Home Page">
+<meta name="author" content="mayur.somani">
+
+<title>Register new student</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/loader.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/loader.css" />
+<link rel="stylesheet" href="/css/float.css" />
+
+</head>
+<body>
+	<div style="text-align: center;">
+		<h1>Register new Student</h1>
+	</div>
+	<hr />
+
+	<!-- Loader.gif -->
+	<div id="loading" class="loader-container">
+		<div class="loading">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="table-responsive">
+			<form class="form-logout" method="get"
+				onsubmit="registerNewStudent()">
+				<table class="table table-bordered table-striped" id="student_table">
+					<caption>Student Data</caption>
+					<tr>
+						<th id='th'>Name</th>
+						<th id='th'>Email</th>
+						<th id='th'>Date Of Birth</th>
+					</tr>
+					<tr>
+						<td id='td'><input id="name" type="text" name="name" required></td>
+						<td id='td'><input id="email" type="email" name="email"
+							required></td>
+						<td id='td'><input id="dateOfBirth" type="date"
+							name="dateOfBirth"></td>
+					</tr>
+					<tr>
+						<td colspan="3" style="text-align: center;" id='td'><input
+							class="btn btn-primary" id="submit" name="Submit" type="submit" /></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	<hr />
+
+	<p id="message" style="text-align: center; color: #3e3e3e;"></p>
+
+	<div class="container float-container">
+		<div class="float-child">
+			<form class="form-logout" method="get" action="/registerNewStudent">
+				<button class="btn btn-primary" type="submit">Create new
+					student</button>
+			</form>
+		</div>
+		<div class="float-child" style="text-align: right">
+			<form class="form-logout" method="get" action="/logout">
+				<button class="btn btn-primary" type="submit">Logout</button>
+			</form>
+		</div>
+	</div>
+</body>
+<script>
+	function registerNewStudent() {
+
+		// to prevent reloading of page
+		event.preventDefault();
+
+		$("#submit").attr("disabled", true);
+		showLoader();
+		document.getElementById("message").innerHTML = "";
+
+		var xhttp = new XMLHttpRequest();
+		var name = document.getElementById('name').value;
+		var email = document.getElementById('email').value;
+		var dateOfBirth = document.getElementById('dateOfBirth').value;
+
+		xhttp.onreadystatechange = async function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("message").innerHTML = '<b style="color: #22cc44;">New student registered sucessfully!</b>';
+				hideLoader();
+			} else if(this.readyState == 4 && this.status == 500)  {
+				
+				// Extract errorMessage from response
+				var errorMessage = this.response.slice(
+						this.response.indexOf("message"),
+						this.response.indexOf("path") - 3)
+				.replaceAll("\"", "")
+				.replace("message:", "");
+				
+				if (errorMessage == null) {
+					errorMessage = "Registration failed!";
+				}
+				
+				document.getElementById("message").innerHTML = '<b style="color: #cc2244;">'+errorMessage+'</b>';
+				hideLoader();
+			} else {
+				console.log("readyState: "+this.readyState+", status: "+this.status);
+				document.getElementById("message").innerHTML = "Processing...";
+			}
+		};
+
+		xhttp.open("POST", "/api/v1/student", true);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		xhttp.send('{"name":"' + name + '","email":"' + email
+				+ '","dateOfBirth":"' + dateOfBirth + '"}');
+	};
+
+	// hide loader
+	$(window).ready(hideLoader);
+</script>
+</html>

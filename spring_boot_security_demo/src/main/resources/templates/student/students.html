@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Home Page">
+<meta name="author" content="mayur.somani">
+
+<title>Students</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/loader.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/loader.css" />
+<link rel="stylesheet" href="/css/float.css" />
+
+</head>
+<body>
+	<div style="text-align: center;">
+		<h1>Students</h1>
+	</div>
+	<hr />
+
+	<!-- Loader.gif -->
+	<div id="loading" class="loader-container">
+		<div class="loading">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped" id="student_table">
+				<caption>Student Data</caption>
+				<tr>
+					<th id='th'>Id</th>
+					<th id='th'>Name</th>
+					<th id='th'>Email</th>
+					<th id='th'>Date Of Birth</th>
+					<th id='th'>Age</th>
+					<th id='th'>Actions</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<hr />
+	<div class="container float-container">
+		<div class="float-child">
+			<form class="form-logout" method="get" action="/registerNewStudent">
+				<button class="btn btn-primary" type="submit">Create new
+					student</button>
+			</form>
+		</div>
+		<div class="float-child" style="text-align: right">
+			<form class="form-logout" method="get" action="/logout">
+				<button class="btn btn-primary" type="submit">Logout</button>
+			</form>
+		</div>
+	</div>
+</body>
+<script>
+	$(document).ready(function() {
+		// show loader
+		$(window).ready(showLoader);
+
+		// logic to extract studentId from URL
+		var str = location.search;
+		var studentId = str.substring(str.lastIndexOf('studentId='));
+		if(!studentId.includes('&')) {
+			var studentId = studentId.substring(10);
+		} else {
+			var studentId = studentId.substring(10, studentId.indexOf('&'));
+		}
+		
+		var studentAPI = '/api/v1/student/' + studentId;
+		$.getJSON(studentAPI, function(data) {
+			var student_data = '';
+			$.each(data, function(key, value) {
+				student_data += '<tr>';
+				student_data += '<td>' + value.id + '</td>';
+				student_data += '<td>' + value.name + '</td>';
+				student_data += '<td>' + value.email + '</td>';
+				student_data += '<td>';
+				student_data += value.dateOfBirth != null ? value.dateOfBirth : '';
+				student_data += '</td>';
+				student_data += '<td>';
+				student_data += value.age != null ? value.age : '';
+				student_data += '</td>';
+				
+				student_data += '<td>';
+				
+				student_data += '<form class="form-logout" method="get" action="/students">';
+				student_data += '<input type="hidden" name="studentId" value="'+value.id+'">';
+				
+				student_data += '<button class="btn btn-primary" type="submit">View</button>';
+				student_data += '&nbsp;';
+				student_data += '<button class="btn btn-primary" type="submit">Edit</button>';
+				student_data += '&nbsp;';
+				student_data += '<button class="btn btn-primary" type="submit">Delete</button>';
+				
+				student_data += '</form>';
+				
+				student_data += '</td>';
+				
+				student_data += '</tr>';
+			});
+			$('#student_table').append(student_data);
+
+		}).fail(function() {
+			/* window.location.replace("/error.html"); */
+		});
+
+		// hide loader
+		$(window).ready(hideLoader);
+	});
+</script>
+</html>
