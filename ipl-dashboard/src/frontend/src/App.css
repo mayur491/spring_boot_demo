@@ -2,3 +2,11 @@
   text-align: left;
   padding: 20px;
 }
+
+.won-card {
+  background-color: #00aa66;
+}
+
+.lost-card {
+  background-color: #cc0033;
+}
