@@ -25,10 +25,19 @@ class TeamController(
     private val matchRepository: MatchRepository
 ) {
 
+    @GetMapping("/")
+    fun getAllTeams(): ResponseEntity<Any> {
+        val listOfTeams = teamRepository.findAll()
+        val map: MutableMap<String, Any> = hashMapOf()
+        map["teams"] = listOfTeams
+        map["success"] = true
+        return ResponseEntity.ok(map)
+    }
+
     @GetMapping("/{teamName}")
     fun getTeamByName(@PathVariable(required = true) teamName: String): ResponseEntity<Any> {
         val teamOptional = teamRepository.findByTeamName(teamName)
-        if (teamOptional.isEmpty) return teamNameNotFound(teamName)
+        if (teamOptional.isEmpty) return resourceNotFound("Team: '$teamName'")
         val team = teamOptional.get()
         team.matches = getRecentMatchesOfTeam(teamName, 4)
         val map: MutableMap<String, Any> = hashMapOf()
@@ -49,10 +58,10 @@ class TeamController(
         )
     }
 
-    private fun teamNameNotFound(teamName: String): ResponseEntity<Any> {
+    private fun resourceNotFound(resource: String): ResponseEntity<Any> {
         val map: MutableMap<String, Any> = hashMapOf()
         map["success"] = false
-        map["message"] = "Team '$teamName' not found"
+        map["message"] = "Not found. '$resource'"
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(map)
@@ -70,6 +79,7 @@ class TeamController(
             fromDate,
             toDate
         )
+        if(matches.isEmpty()) return resourceNotFound("Matches for Team: '$teamName'")
         val map: MutableMap<String, Any> = hashMapOf()
         map["matches"] = matches
         map["success"] = true

@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import MatchDetailCard from '../components/MatchDetailCard'
 import MatchSmallCard from '../components/MatchSmallCard'
 import './TeamPage.css'
@@ -75,7 +75,9 @@ const TeamPage = () => {
                     )
             }
             <div className='more-link'>
-                <a href="#">More {'>'}</a>
+                <Link to={`./${teamName}/matches/${process.env.REACT_APP_DATA_END_YEAR}`}>
+                    More {'>'}
+                </Link>
             </div>
             {/* Row 3 ends */}
 
